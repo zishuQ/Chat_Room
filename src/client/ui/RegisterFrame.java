@@ -1,13 +1,3 @@
-/**
- * Copyright (C), 2015-2019, XXX有限公司
- * FileName: RegisterFrame
- * Author:   ITryagain
- * Date:     2019/5/16 20:23
- * Description:
- * History:
- * <author>          <time>          <version>          <desc>
- * 作者姓名           修改时间           版本号              描述
- */
 package client.ui;
 
 import client.util.ClientUtil;
@@ -23,15 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
-
-/**
- * 〈一句话功能简述〉<br> 
- * 〈〉
- *
- * @author ITryagain
- * @create 2019/5/16
- * @since 1.0.0
- */
+import java.util.Objects;
 
 public class RegisterFrame extends JFrame {
     private static final long serialVersionUID = -768631070458723803L;
@@ -45,15 +27,15 @@ public class RegisterFrame extends JFrame {
     private JButton reset;
     private JButton cancel;
 
-    public RegisterFrame(){
+    public RegisterFrame() {
         this.init();
         setVisible(true);
     }
 
-    public void init(){
+    public void init() {
         this.setTitle("注册JQ新账号");//设置标题
-        setBounds((DataBuffer.screenSize.width - 387)/2,
-                (DataBuffer.screenSize.height - 267)/2,
+        setBounds((DataBuffer.screenSize.width - 387) / 2,
+                (DataBuffer.screenSize.height - 267) / 2,
                 387, 267);
         getContentPane().setLayout(null);
         setResizable(false);
@@ -86,8 +68,8 @@ public class RegisterFrame extends JFrame {
         label4.setBounds(230, 36, 31, 17);
         getContentPane().add(label4);
 
-        sex1 = new JRadioButton("男",true);
-        sex1.setBounds (268, 31,44, 25);
+        sex1 = new JRadioButton("男", true);
+        sex1.setBounds(268, 31, 44, 25);
         getContentPane().add(sex1);
         sex0 = new JRadioButton("女");
         sex0.setBounds(310, 31, 44, 25);
@@ -131,7 +113,7 @@ public class RegisterFrame extends JFrame {
             }
         });
         //关闭窗口
-        this.addWindowListener(new WindowAdapter(){
+        this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 RegisterFrame.this.dispose();
             }
@@ -150,7 +132,7 @@ public class RegisterFrame extends JFrame {
         //确认按钮监听事件处理
         ok.addActionListener(new ActionListener() {
             public void actionPerformed(final ActionEvent e) {
-                if (pwdFld.getPassword().length==0 || pwd2Fld.getPassword().length==0) {
+                if (pwdFld.getPassword().length == 0 || pwd2Fld.getPassword().length == 0) {
                     JOptionPane.showMessageDialog(RegisterFrame.this, "带 “ * ” 为必填内容!");
                     //判断用户名和密码是否为空
                 } else if (!new String(pwdFld.getPassword()).equals(new String(pwd2Fld.getPassword()))) {
@@ -175,8 +157,9 @@ public class RegisterFrame extends JFrame {
             }
         });
     }
+
     //注册方法
-    private void registe(User user) throws IOException, ClassNotFoundException{
+    private void registe(User user) throws IOException, ClassNotFoundException {
         Request request = new Request();
         request.setAction("userRegiste");
         request.setAttribute("user", user);
@@ -185,17 +168,15 @@ public class RegisterFrame extends JFrame {
         Response response = ClientUtil.sendTextRequest(request);
 
         ResponseStatus status = response.getStatus();
-        switch(status){
-            case OK:
-                User user2 = (User)response.getData("user");
-                JOptionPane.showMessageDialog(RegisterFrame.this,
-                        "恭喜您，您的Q号:"+ user2.getId() + ",请牢记!!!",
-                        "注册成功",JOptionPane.INFORMATION_MESSAGE);
-                this.setVisible(false);
-                break;
-            default:
-                JOptionPane.showMessageDialog(RegisterFrame.this,
-                        "注册失败，请稍后再试！！！","服务器内部错误！",JOptionPane.ERROR_MESSAGE);
+        if (Objects.requireNonNull(status) == ResponseStatus.OK) {
+            User user2 = (User) response.getData("user");
+            JOptionPane.showMessageDialog(RegisterFrame.this,
+                    "恭喜您，您的Q号:" + user2.getId() + ",请牢记!!!",
+                    "注册成功", JOptionPane.INFORMATION_MESSAGE);
+            this.setVisible(false);
+        } else {
+            JOptionPane.showMessageDialog(RegisterFrame.this,
+                    "注册失败，请稍后再试！！！", "服务器内部错误！", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

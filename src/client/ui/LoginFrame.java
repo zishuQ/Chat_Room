@@ -1,13 +1,3 @@
-/**
- * Copyright (C), 2015-2019, XXX有限公司
- * FileName: LoginFrame
- * Author:   ITryagain
- * Date:     2019/5/16 20:23
- * Description:
- * History:
- * <author>          <time>          <version>          <desc>
- * 作者姓名           修改时间           版本号              描述
- */
 package client.ui;
 
 import client.DataBuffer;
@@ -131,7 +121,7 @@ public class LoginFrame extends JFrame {
     /** 登录 */
     @SuppressWarnings("unchecked")
     private void login() {
-        if (idTxt.getText().length() == 0
+        if (idTxt.getText().isEmpty()
                 || pwdFld.getPassword().length == 0) {
             JOptionPane.showMessageDialog(LoginFrame.this,
                     "账号和密码是必填的",
@@ -161,6 +151,7 @@ public class LoginFrame extends JFrame {
             e1.printStackTrace();
         }
 
+        assert response != null;
         if(response.getStatus() == ResponseStatus.OK){
             //获取当前用户
             User user2 = (User)response.getData("user");

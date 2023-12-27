@@ -1,13 +1,3 @@
-/**
- * Copyright (C), 2015-2019, XXX有限公司
- * FileName: CharFrame
- * Author:   ITryagain
- * Date:     2019/5/16 20:21
- * Description:
- * History:
- * <author>          <time>          <version>          <desc>
- * 作者姓名           修改时间           版本号              描述
- */
 package client.ui;
 
 import client.ClientThread;
@@ -29,15 +19,6 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-/**
- * 〈一句话功能简述〉<br> 
- * 〈〉
- *
- * @author ITryagain
- * @create 2019/5/16
- * @since 1.0.0
- */
 
 public class ChatFrame extends JFrame{
     private static final long serialVersionUID = -2310785591507878535L;
@@ -122,17 +103,11 @@ public class ChatFrame extends JFrame{
         btnPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         tempPanel.add(btnPanel, BorderLayout.CENTER);
 
-        //字体按钮
-//        JButton fontBtn = new JButton(new ImageIcon("images/font.png"));
-//        fontBtn.setMargin(new Insets(0,0,0,0));
-//        fontBtn.setToolTipText("设置字体和格式");
-//        btnPanel.add(fontBtn);
-
         //表情按钮
-//        JButton faceBtn = new JButton(new ImageIcon("images/sendFace.png"));
-//        faceBtn.setMargin(new Insets(0,0,0,0));
-//        faceBtn.setToolTipText("选择表情");
-//        btnPanel.add(faceBtn);
+        JButton faceBtn = new JButton(new ImageIcon("images/sendFace.png"));
+        faceBtn.setMargin(new Insets(0,0,0,0));
+        faceBtn.setToolTipText("选择表情");
+        btnPanel.add(faceBtn);
 
         //发送文件按钮
         JButton shakeBtn = new JButton(new ImageIcon("images/shake.png"));
