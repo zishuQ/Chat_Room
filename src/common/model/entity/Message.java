@@ -41,4 +41,14 @@ public class Message implements Serializable {
     public void setSendTime(Date sendTime) {
         this.sendTime = sendTime;
     }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "toUser=" + toUser +
+                ", fromUser=" + fromUser +
+                ", message='" + message + '\'' +
+                ", sendTime=" + sendTime +
+                '}';
+    }
 }

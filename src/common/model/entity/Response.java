@@ -29,7 +29,7 @@ public class Response implements Serializable {
 
     public Response(){
         this.status = ResponseStatus.OK;
-        this.dataMap = new HashMap<String, Object>();
+        this.dataMap = new HashMap<>();
     }
 
 
@@ -79,5 +79,15 @@ public class Response implements Serializable {
 
     public void clearData(){
         this.dataMap.clear();
+    }
+
+    @Override
+    public String toString() {
+        return "Response{" +
+                "status=" + status +
+                ", type=" + type +
+                ", dataMap=" + dataMap +
+                ", outputStream=" + outputStream +
+                '}';
     }
 }

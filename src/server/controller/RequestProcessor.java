@@ -1,6 +1,7 @@
 package server.controller;
 
 import common.model.entity.*;
+import common.util.RecordUtil;
 import server.DataBuffer;
 import server.OnlineClientIOCache;
 import server.model.service.UserService;
@@ -11,11 +12,14 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class RequestProcessor implements Runnable {
     private Socket currentClientSocket;  //当前正在请求服务器的客户端Socket
+
+    final private Map<Long, List<Message>> recordMap = DataBuffer.messageMap;
 
     public RequestProcessor(Socket currentClientSocket) {
         this.currentClientSocket = currentClientSocket;
@@ -44,9 +48,6 @@ public class RequestProcessor implements Runnable {
                         break;
                     case "chat":        //聊天
                         chat(request);
-                        break;
-                    case "shake":       //振动
-                        shake(request);
                         break;
                     case "toSendFile":  //准备发送文件
                         toSendFile(request);
@@ -123,6 +124,9 @@ public class RequestProcessor implements Runnable {
         DataBuffer.onlineUserTableModel.remove(user.getId()); //把当前下线用户从在线用户表Model中删除
         iteratorResponse(response);//通知所有其它在线客户端
 
+        RecordUtil.serializeMessages(recordMap.get(user.getId()), user.getId());
+        recordMap.remove(user.getId());
+
         return false;  //断开监听
     }
 
@@ -163,7 +167,7 @@ public class RequestProcessor implements Runnable {
         if (null != user) {
             if (DataBuffer.onlineUsersMap.containsKey(user.getId())) { //用户已经登录了
                 response.setStatus(ResponseStatus.OK);
-                response.setData("msg", "该 用户已经在别处上线了！");
+                response.setData("msg", "该用户已经在别处上线了！");
                 currentClientIO.getOos().writeObject(response);  //把响应对象往客户端写
                 currentClientIO.getOos().flush();
             } else { //正确登录
@@ -192,6 +196,10 @@ public class RequestProcessor implements Runnable {
                         new String[]{String.valueOf(user.getId()),
                                 user.getNickname(),
                                 String.valueOf(user.getSex())});
+
+                if (!recordMap.containsKey(user.getId())) {
+                    recordMap.put(user.getId(), new ArrayList<>());
+                }
             }
         } else { //登录失败
             response.setStatus(ResponseStatus.OK);
@@ -211,7 +219,12 @@ public class RequestProcessor implements Runnable {
         response.setType(ResponseType.CHAT);
         response.setData("txtMsg", msg);
 
+        recordMap.get(msg.getFromUser().getId()).add(msg);
+
         if (msg.getToUser() != null) { //私聊:只给私聊的对象返回响应
+            if (recordMap.containsKey(msg.getToUser().getId())) {
+                recordMap.get(msg.getToUser().getId()).add(msg);
+            }
             OnlineClientIOCache io = DataBuffer.onlineUserIOCacheMap.get(msg.getToUser().getId());
             sendResponse(io, response);
         } else {  //群聊:给除了发消息的所有客户端都返回响应
@@ -219,9 +232,13 @@ public class RequestProcessor implements Runnable {
                 if (msg.getFromUser().getId() == id) {
                     continue;
                 }
+                if (recordMap.containsKey(id)) {
+                    recordMap.get(id).add(msg);
+                }
                 sendResponse(DataBuffer.onlineUserIOCacheMap.get(id), response);
             }
         }
+
     }
 
     /*广播*/
@@ -232,10 +249,9 @@ public class RequestProcessor implements Runnable {
         msg.setSendTime(new Date());
 
         DateFormat df = new SimpleDateFormat("HH:mm:ss");
-        StringBuffer sb = new StringBuffer();
-        sb.append(" ").append(df.format(msg.getSendTime())).append(" ");
-        sb.append("系统通知\n  " + str + "\n");
-        msg.setMessage(sb.toString());
+        String sb = " " + df.format(msg.getSendTime()) + " " +
+                "系统通知\n  " + str + "\n";
+        msg.setMessage(sb);
 
         Response response = new Response();
         response.setStatus(ResponseStatus.OK);
@@ -291,28 +307,6 @@ public class RequestProcessor implements Runnable {
 
         OnlineClientIOCache io = DataBuffer.onlineUserIOCacheMap.get(msg.getToUser().getId());
         sendResponse_sys(io, response);
-    }
-
-    /**
-     * 发送振动
-     */
-    public void shake(Request request) throws IOException {
-        Message msg = (Message) request.getAttribute("msg");
-
-        DateFormat df = new SimpleDateFormat("HH:mm:ss");
-        StringBuffer sb = new StringBuffer();
-        sb.append(" ").append(msg.getFromUser().getNickname())
-                .append("(").append(msg.getFromUser().getId()).append(") ")
-                .append(df.format(msg.getSendTime())).append("\n  给您发送了一个窗口抖动\n");
-        msg.setMessage(sb.toString());
-
-        Response response = new Response();
-        response.setStatus(ResponseStatus.OK);
-        response.setType(ResponseType.SHAKE);
-        response.setData("ShakeMsg", msg);
-
-        OnlineClientIOCache io = DataBuffer.onlineUserIOCacheMap.get(msg.getToUser().getId());
-        sendResponse(io, response);
     }
 
     /**

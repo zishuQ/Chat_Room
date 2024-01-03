@@ -1,5 +1,6 @@
 package server;
 
+import common.model.entity.Message;
 import common.model.entity.User;
 import server.model.entity.OnlineUserTableModel;
 import server.model.entity.RegistedUserTableModel;
@@ -7,6 +8,7 @@ import server.model.entity.RegistedUserTableModel;
 import java.awt.*;
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -26,15 +28,17 @@ public class DataBuffer {
     public static OnlineUserTableModel onlineUserTableModel;
     // 当前服务器所在系统的屏幕尺寸
     public static Dimension screenSize;
+    public static Map<Long, List<Message>> messageMap;
 
-    static{
+    static {
         // 初始化
-        onlineUserIOCacheMap = new ConcurrentSkipListMap<Long,OnlineClientIOCache>();
+        onlineUserIOCacheMap = new ConcurrentSkipListMap<Long, OnlineClientIOCache>();
         onlineUsersMap = new ConcurrentSkipListMap<Long, User>();
         configProp = new Properties();
         registedUserTableModel = new RegistedUserTableModel();
         onlineUserTableModel = new OnlineUserTableModel();
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        messageMap = new ConcurrentSkipListMap<Long, List<Message>>();
 
         // 加载服务器配置文件
         try {

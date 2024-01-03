@@ -1,13 +1,3 @@
-/**
- * Copyright (C), 2015-2019, XXX有限公司
- * FileName: Request
- * Author:   ITryagain
- * Date:     2019/5/15 18:55
- * Description:
- * History:
- * <author>          <time>          <version>          <desc>
- * 作者姓名           修改时间           版本号              描述
- */
 package common.model.entity;
 
 import java.io.Serializable;
@@ -21,7 +11,7 @@ public class Request implements Serializable {
     /** 请求动作 */
     private String action;
     /** 请求域中的数据,name-value */
-    private Map<String, Object> attributesMap;
+    private final Map<String, Object> attributesMap;
 
     public Request(){
         this.attributesMap = new HashMap<String, Object>();
@@ -61,5 +51,14 @@ public class Request implements Serializable {
 
     public void clearAttribute(){
         this.attributesMap.clear();
+    }
+
+    @Override
+    public String toString() {
+        return "Request{" +
+                "type=" + type +
+                ", action='" + action + '\'' +
+                ", attributesMap=" + attributesMap +
+                '}';
     }
 }
