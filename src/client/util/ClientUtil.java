@@ -17,15 +17,6 @@ import common.model.entity.Response;
 
 import java.io.IOException;
 
-/**
- * 〈客户端发送请求到服务器的工具〉<br>
- * 〈〉
- *
- * @author ITryagain
- * @create 2019/5/16
- * @since 1.0.0
- */
-
 public class ClientUtil {
 
     /** 发送请求对象,主动接收响应 */

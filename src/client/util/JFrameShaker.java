@@ -15,15 +15,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- * 〈一句话功能简述〉<br> 
- * 〈窗口振动器〉
- *
- * @author ITryagain
- * @create 2019/5/16
- * @since 1.0.0
- */
-
 public class JFrameShaker {
     /** 窗口距离中心左右晃动的最大距离(像索) */
     public static final int SHAKE_DISTANCE = 4;

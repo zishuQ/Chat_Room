@@ -20,14 +20,7 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * 〈一句话功能简述〉<br> 
- * 〈〉
- *
- * @author ITryagain
- * @create 2019/5/16
- * @since 1.0.0
- */
+
 
 public class LoginFrame extends JFrame {
     private static final long serialVersionUID = -3426717670093483287L;

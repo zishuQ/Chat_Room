@@ -11,6 +11,8 @@ import javax.swing.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 
 public class ClientThread extends Thread {
@@ -64,10 +66,8 @@ public class ClientThread extends Thread {
                     ChatFrame.remove();
                 }
             }
-        } catch (IOException e) {
-            //e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -82,7 +82,7 @@ public class ClientThread extends Thread {
         Socket socket = null;
         try {
             socket = new Socket(sendFile.getDestIp(), sendFile.getDestPort());//套接字连接
-            bis = new BufferedInputStream(new FileInputStream(sendFile.getSrcName()));//文件读入
+            bis = new BufferedInputStream(Files.newInputStream(Paths.get(sendFile.getSrcName())));//文件读入
             bos = new BufferedOutputStream(socket.getOutputStream());//文件写出
 
             byte[] buffer = new byte[1024];
@@ -116,7 +116,7 @@ public class ClientThread extends Thread {
             serverSocket = new ServerSocket(sendFile.getDestPort());
             socket = serverSocket.accept(); //接收
             bis = new BufferedInputStream(socket.getInputStream());//缓冲读
-            bos = new BufferedOutputStream(new FileOutputStream(sendFile.getDestName()));//缓冲写出
+            bos = new BufferedOutputStream(Files.newOutputStream(Paths.get(sendFile.getDestName())));//缓冲写出
 
             byte[] buffer = new byte[1024];
             int n = -1;
@@ -169,7 +169,6 @@ public class ClientThread extends Thread {
                     sendFile.setDestPort(DataBuffer.RECEIVE_FILE_PORT);
 
                     request.setAction("agreeReceiveFile");
-//                    receiveFile(response);
                     ClientUtil.appendTxt2MsgListArea("【文件消息】您已同意接收来自 "
                             + fromName + " 的文件，正在接收文件 ...\n");
                 } else {

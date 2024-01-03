@@ -31,24 +31,32 @@ public class RequestProcessor implements Runnable {
                 //从请求输入流中读取到客户端提交的请求对象
                 Request request = (Request) currentClientIOCache.getOis().readObject();
                 System.out.println("Server读取了客户端的请求:" + request.getAction());
-
                 String actionName = request.getAction();   //获取请求中的动作
-                if (actionName.equals("userRegiste")) {      //用户注册
-                    registe(currentClientIOCache, request);
-                } else if (actionName.equals("userLogin")) {  //用户登录
-                    login(currentClientIOCache, request);
-                } else if ("exit".equals(actionName)) {       //请求断开连接
-                    flag = logout(currentClientIOCache, request);
-                } else if ("chat".equals(actionName)) {       //聊天
-                    chat(request);
-                } else if ("shake".equals(actionName)) {      //振动
-                    shake(request);
-                } else if ("toSendFile".equals(actionName)) { //准备发送文件
-                    toSendFile(request);
-                } else if ("agreeReceiveFile".equals(actionName)) { //同意接收文件
-                    agreeReceiveFile(request);
-                } else if ("refuseReceiveFile".equals(actionName)) { //拒绝接收文件
-                    refuseReceiveFile(request);
+                switch (actionName) {
+                    case "userRegiste":       //用户注册
+                        registe(currentClientIOCache, request);
+                        break;
+                    case "userLogin":   //用户登录
+                        login(currentClientIOCache, request);
+                        break;
+                    case "exit":        //请求断开连接
+                        flag = logout(currentClientIOCache, request);
+                        break;
+                    case "chat":        //聊天
+                        chat(request);
+                        break;
+                    case "shake":       //振动
+                        shake(request);
+                        break;
+                    case "toSendFile":  //准备发送文件
+                        toSendFile(request);
+                        break;
+                    case "agreeReceiveFile":  //同意接收文件
+                        agreeReceiveFile(request);
+                        break;
+                    case "refuseReceiveFile":  //拒绝接收文件
+                        refuseReceiveFile(request);
+                        break;
                 }
             }
         } catch (Exception e) {
