@@ -10,6 +10,7 @@ import common.model.entity.FileInfo;
 import common.model.entity.Message;
 import common.model.entity.Request;
 import common.model.entity.User;
+import common.util.RecordUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class ChatFrame extends JFrame {
     private static final long serialVersionUID = -2310785591507878535L;
@@ -118,12 +120,6 @@ public class ChatFrame extends JFrame {
         JPanel btnPanel = new JPanel();
         btnPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         tempPanel.add(btnPanel, BorderLayout.CENTER);
-
-        //发送文件按钮
-        JButton shakeBtn = new JButton(new ImageIcon("images/shake.png"));
-        shakeBtn.setMargin(new Insets(0, 0, 0, 0));
-        shakeBtn.setToolTipText("向对方发送窗口振动");
-        btnPanel.add(shakeBtn);
 
         //发送文件按钮
         JButton sendFileBtn = new JButton(new ImageIcon("images/sendPic.png"));
@@ -259,6 +255,13 @@ public class ChatFrame extends JFrame {
         });
 
         this.loadData();  //加载初始数据
+
+        User user = DataBuffer.currentUser;
+        // 这里是本地读取，应该在远程服务器端也存一份
+        List<Message> messageList = RecordUtil.deserializeMessages(user.getId());
+        for (Message message : messageList) {
+            ClientUtil.appendTxt2MsgListArea(message.getMessage());
+        }
     }
 
     /**
@@ -411,7 +414,7 @@ public class ChatFrame extends JFrame {
         }
     }
 
-    /*踢除*/
+    /** 踢除*/
     public static void remove() {
         int select = JOptionPane.showConfirmDialog(sendArea,
                 "您已被踢除？\n\n", "系统通知",

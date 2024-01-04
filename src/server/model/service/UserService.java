@@ -21,8 +21,9 @@ public class UserService {
      * 新增用户
      */
     public void addUser(User user) {
-        user.setId(++idCount);
         List<User> users = loadAllUser();
+        idCount = users.size();
+        user.setId(++idCount);
         users.add(user);
         saveAllUser(users);
     }

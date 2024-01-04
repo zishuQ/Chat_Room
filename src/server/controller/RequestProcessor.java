@@ -17,9 +17,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class RequestProcessor implements Runnable {
-    private Socket currentClientSocket;  //当前正在请求服务器的客户端Socket
+    private final Socket currentClientSocket;  //当前正在请求服务器的客户端Socket
 
-    final private Map<Long, List<Message>> recordMap = DataBuffer.messageMap;
+    private final Map<Long, List<Message>> recordMap = DataBuffer.messageMap;
 
     public RequestProcessor(Socket currentClientSocket) {
         this.currentClientSocket = currentClientSocket;
@@ -125,7 +125,6 @@ public class RequestProcessor implements Runnable {
         iteratorResponse(response);//通知所有其它在线客户端
 
         RecordUtil.serializeMessages(recordMap.get(user.getId()), user.getId());
-        recordMap.remove(user.getId());
 
         return false;  //断开监听
     }
@@ -197,8 +196,12 @@ public class RequestProcessor implements Runnable {
                                 user.getNickname(),
                                 String.valueOf(user.getSex())});
 
-                if (!recordMap.containsKey(user.getId())) {
+                if (!DataBuffer.recordIds.contains(user.getId())) {
                     recordMap.put(user.getId(), new ArrayList<>());
+                } else {
+                    List<Message> messageList = RecordUtil.deserializeMessages(user.getId());
+                    recordMap.put(user.getId(), messageList);
+                    System.out.println(messageList.equals(RecordUtil.deserializeMessages(user.getId())));
                 }
             }
         } else { //登录失败
