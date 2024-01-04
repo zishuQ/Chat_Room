@@ -48,21 +48,20 @@ public class ConfigFrame extends JFrame {
         mainPanel.setLayout(null);
 
         JLabel ipLbl = new JLabel("服务器IP:");
-        ipLbl.setBounds(100, 60, 80, 22);
+        ipLbl.setBounds(100, 40, 80, 22);
         mainPanel.add(ipLbl);
         ipTxt = new JTextField();
-        ipTxt.setBounds(155, 60, 140, 22);
+        ipTxt.setBounds(155, 40, 140, 22);
         mainPanel.add(ipTxt);
 
         JLabel portLbl = new JLabel("端口:");
-        portLbl.setBounds(100, 90, 40, 22);  // 调整这里的y坐标
+        portLbl.setBounds(100, 80, 40, 22);  // 调整这里的y坐标
         mainPanel.add(portLbl);
         portTxt = new JTextField();
-        portTxt.setBounds(155, 90, 140, 22);  // 调整这里的y坐标
+        portTxt.setBounds(155, 80, 140, 22);  // 调整这里的y坐标
         mainPanel.add(portTxt);
-
         submitBtn = new JButton("提交");
-        submitBtn.setBounds(170, 130, 80, 30); // 调整按钮的位置和大小
+        submitBtn.setBounds(170, 120, 80, 30); // 调整按钮的位置和大小
         mainPanel.add(submitBtn);  // 添加按钮到主面板
 
         submitBtn.addActionListener(new ActionListener() {

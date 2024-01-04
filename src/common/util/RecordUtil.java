@@ -30,15 +30,15 @@ public class RecordUtil {
 
     /**
      * 序列化消息列表，并将结果存储到本地文件中
-     * @param messages 待序列化的消息列表
+     * @param message 待序列化的消息
      * @param id 指定文件的标识
      */
-    public static void serializeMessagesInLocal(List<Message> messages, Long id) {
-        String filePath = path + id + "_local" + suffix;
-        try (ObjectOutputStream outputStream = new ObjectOutputStream(Files.newOutputStream(Paths.get(filePath)))) {
-            outputStream.writeObject(messages);
+    public static void recordInLocal(Message message, Long id) {
+        String fileName = "./LocalRecord/" + id + ".txt";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
+            writer.write(message.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("写入文件时发生错误：" + e.getMessage());
         }
     }
 
@@ -58,6 +58,19 @@ public class RecordUtil {
             e.printStackTrace();
         }
         return new ArrayList<>(); // 返回一个空的List，或者可以根据实际需求处理
+    }
+    public static String getLocalRecord(Long id) {
+        String fileName = "./LocalRecord/" + id + ".txt";
+        StringBuilder stringBuilder = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                stringBuilder.append(line).append('\n');
+            }
+        } catch (IOException e) {
+            System.err.println("读取文件时发生错误：" + e.getMessage());
+        }
+        return stringBuilder.toString();
     }
 
     /**

@@ -15,8 +15,11 @@ import client.ui.ChatFrame;
 import common.model.entity.Message;
 import common.model.entity.Request;
 import common.model.entity.Response;
+import common.model.entity.User;
 import common.util.RecordUtil;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
@@ -70,10 +73,10 @@ public class ClientUtil {
         ChatFrame.msgListArea.setCaretPosition(ChatFrame.msgListArea.getDocument().getLength());
     }
 
-    public static void appendTxt2MsgListArea(Message message, List<Message> messages) {
+    public static void appendTxt2MsgListArea(Message message, Long id) {
         System.out.println("----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----");
-        System.out.println(message.getMessage());
-        messages.add(message);
+        RecordUtil.recordInLocal(message, id);
+        System.out.println("Success");
         System.out.println("----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----");
     }
 }

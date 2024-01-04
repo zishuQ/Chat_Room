@@ -66,7 +66,7 @@ public class ChatFrame extends JFrame {
 
     public void init() {
         this.setTitle("JQ聊天室");
-        this.setSize(1500, 1200);
+        this.setSize(550 * 2, 500 * 2);
         this.setResizable(false);
 
         //设置默认窗体在屏幕中央
@@ -82,8 +82,7 @@ public class ChatFrame extends JFrame {
         userPanel.setLayout(new BorderLayout());
 
         // 创建一个分隔窗格
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                mainPanel, userPanel);
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, mainPanel, userPanel);
         splitPane.setDividerLocation(380);
         splitPane.setDividerSize(10);
         splitPane.setOneTouchExpandable(true);
@@ -257,11 +256,15 @@ public class ChatFrame extends JFrame {
         this.loadData();  //加载初始数据
 
         User user = DataBuffer.currentUser;
-        // 这里是本地读取，应该在远程服务器端也存一份
-        List<Message> messageList = RecordUtil.deserializeMessages(user.getId());
-        for (Message message : messageList) {
-            ClientUtil.appendTxt2MsgListArea(message.getMessage());
-        }
+        // 从服务器读取
+//        List<Message> messageList = RecordUtil.deserializeMessages(user.getId());
+//        for (Message message : messageList) {
+//            ClientUtil.appendTxt2MsgListArea(message.getMessage());
+//        }
+        // 从本地读取聊天记录
+        String record = RecordUtil.getLocalRecord(user.getId());
+        ClientUtil.appendTxt2MsgListArea(record);
+
     }
 
     /**
@@ -344,7 +347,7 @@ public class ChatFrame extends JFrame {
             });
             sendArea.setText("");
             ClientUtil.appendTxt2MsgListArea(msg.getMessage());
-            ClientUtil.appendTxt2MsgListArea(msg, DataBuffer.messageMap.get(DataBuffer.currentUser.getId()));
+            ClientUtil.appendTxt2MsgListArea(msg, DataBuffer.currentUser.getId());
         }
     }
 
