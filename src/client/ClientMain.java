@@ -46,10 +46,10 @@ public class ClientMain {
         configFrame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent windowEvent) {
-                storedIP = configFrame.getStoredIP();
-                storedPort = configFrame.getStoredPort();
-//                storedIP = "127.0.0.1";
-//                storedPort = 6768;
+//                storedIP = configFrame.getStoredIP();
+//                storedPort = configFrame.getStoredPort();
+                storedIP = "127.0.0.1";
+                storedPort = 6768;
 
                 // 在这里使用 storedIP 和 storedPort 进行操作，例如建立与服务器的连接等...
 

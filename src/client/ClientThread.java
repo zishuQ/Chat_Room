@@ -47,6 +47,7 @@ public class ClientThread extends Thread {
                 } else if (type == ResponseType.CHAT) { //聊天
                     Message msg = (Message) response.getData("txtMsg");
                     ClientUtil.appendTxt2MsgListArea(msg.getMessage());
+                    ClientUtil.appendTxt2MsgListArea(msg, DataBuffer.messageMap.get(DataBuffer.currentUser.getId()));
                 } else if (type == ResponseType.SHAKE) { //振动
                     Message msg = (Message) response.getData("ShakeMsg");
                     ClientUtil.appendTxt2MsgListArea(msg.getMessage());

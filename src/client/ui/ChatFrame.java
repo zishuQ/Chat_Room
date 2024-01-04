@@ -66,7 +66,7 @@ public class ChatFrame extends JFrame {
 
     public void init() {
         this.setTitle("JQ聊天室");
-        this.setSize(550, 500);
+        this.setSize(1500, 1200);
         this.setResizable(false);
 
         //设置默认窗体在屏幕中央
@@ -344,6 +344,7 @@ public class ChatFrame extends JFrame {
             });
             sendArea.setText("");
             ClientUtil.appendTxt2MsgListArea(msg.getMessage());
+            ClientUtil.appendTxt2MsgListArea(msg, DataBuffer.messageMap.get(DataBuffer.currentUser.getId()));
         }
     }
 
@@ -414,7 +415,9 @@ public class ChatFrame extends JFrame {
         }
     }
 
-    /** 踢除*/
+    /**
+     * 踢除
+     */
     public static void remove() {
         int select = JOptionPane.showConfirmDialog(sendArea,
                 "您已被踢除？\n\n", "系统通知",

@@ -27,7 +27,7 @@ public class ConfigFrame extends JFrame {
     private void init() {
         // 初始化UI组件和布局...
         this.setTitle("连接服务器");
-        this.setSize(330, 280);
+        this.setSize(430, 350);
         //设置默认窗体在屏幕中央
         int x = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         int y = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
@@ -37,7 +37,7 @@ public class ConfigFrame extends JFrame {
         //把Logo放置到JFrame的北边
         Icon icon = new ImageIcon("images/logo.png");
         JLabel label = new JLabel(icon);
-        label.setPreferredSize(new Dimension(324, 47));
+        label.setPreferredSize(new Dimension(430, 150));
         this.add(label, BorderLayout.NORTH);
 
         //登录信息面板
@@ -48,21 +48,21 @@ public class ConfigFrame extends JFrame {
         mainPanel.setLayout(null);
 
         JLabel ipLbl = new JLabel("服务器IP:");
-        ipLbl.setBounds(50, 60, 80, 22);
+        ipLbl.setBounds(100, 60, 80, 22);
         mainPanel.add(ipLbl);
         ipTxt = new JTextField();
-        ipTxt.setBounds(105, 60, 140, 22);
+        ipTxt.setBounds(155, 60, 140, 22);
         mainPanel.add(ipTxt);
 
         JLabel portLbl = new JLabel("端口:");
-        portLbl.setBounds(50, 90, 40, 22);  // 调整这里的y坐标
+        portLbl.setBounds(100, 90, 40, 22);  // 调整这里的y坐标
         mainPanel.add(portLbl);
         portTxt = new JTextField();
-        portTxt.setBounds(105, 90, 140, 22);  // 调整这里的y坐标
+        portTxt.setBounds(155, 90, 140, 22);  // 调整这里的y坐标
         mainPanel.add(portTxt);
 
         submitBtn = new JButton("提交");
-        submitBtn.setBounds(120, 130, 80, 30); // 调整按钮的位置和大小
+        submitBtn.setBounds(170, 130, 80, 30); // 调整按钮的位置和大小
         mainPanel.add(submitBtn);  // 添加按钮到主面板
 
         submitBtn.addActionListener(new ActionListener() {
