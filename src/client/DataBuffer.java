@@ -18,7 +18,7 @@ public class DataBuffer {
     /** 在线用户列表 */
     public static List<User> onlineUsers;
     /** 当前客户端连接到服务器的套节字 */
-    public static Socket clientSeocket;
+    public static Socket clientSocket;
     /** 当前客户端连接到服务器的输出流 */
     public static ObjectOutputStream oos;
     /** 当前客户端连接到服务器的输入流 */

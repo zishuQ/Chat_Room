@@ -24,7 +24,7 @@ public class ClientThread extends Thread {
 
     public void run() {
         try {
-            while (DataBuffer.clientSeocket.isConnected()) {
+            while (DataBuffer.clientSocket.isConnected()) {
                 Response response = (Response) DataBuffer.ois.readObject();
                 ResponseType type = response.getType();
 

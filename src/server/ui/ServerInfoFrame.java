@@ -25,20 +25,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.TimerTask;
-
-/**
- * 〈一句话功能简述〉<br>
- * 〈服务器信息窗体〉
- *
- * @author ITryagain
- * @create 2019/5/15
- * @since 1.0.0
- */
 
 public class ServerInfoFrame extends JFrame {
     private static final long serialVersionUID = 6274443611957724780L;
@@ -53,7 +49,8 @@ public class ServerInfoFrame extends JFrame {
     }
 
     public void init() {  //初始化窗体
-        this.setTitle("服务器启动");//设置服务器启动标题
+        String ipAddress = getWLANIPv4Address();
+        this.setTitle("服务器 - IP地址: " + ipAddress);//设置服务器启动标题
         this.setBounds((DataBuffer.screenSize.width - 700)/2,
                 (DataBuffer.screenSize.height - 475)/2, 700, 475);
         this.setLayout(new BorderLayout());
@@ -242,5 +239,27 @@ public class ServerInfoFrame extends JFrame {
             //覆盖默认的窗口关闭事件动作
             setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         }
+    }
+
+    public String getWLANIPv4Address() {
+        try {
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                NetworkInterface networkInterface = interfaces.nextElement();
+                String interfaceName = networkInterface.getName();
+                if (interfaceName.startsWith("wlan") || interfaceName.startsWith("Wi-Fi")) {
+                    Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
+                    while (addresses.hasMoreElements()) {
+                        InetAddress address = addresses.nextElement();
+                        if (address instanceof Inet4Address) {
+                            return address.getHostAddress(); // 返回 IPv4 地址
+                        }
+                    }
+                }
+            }
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        return "未知";
     }
 }

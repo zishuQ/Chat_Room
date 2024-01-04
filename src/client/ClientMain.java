@@ -46,19 +46,19 @@ public class ClientMain {
         configFrame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent windowEvent) {
-//                storedIP = configFrame.getStoredIP();
-//                storedPort = configFrame.getStoredPort();
-                storedIP = "127.0.0.1";
-                storedPort = 6768;
+                storedIP = configFrame.getStoredIP();
+                storedPort = configFrame.getStoredPort();
+//                storedIP = "127.0.0.1";
+//                storedPort = 6768;
 
                 // 在这里使用 storedIP 和 storedPort 进行操作，例如建立与服务器的连接等...
 
                 System.out.println("Stored IP in ClientMain: " + storedIP);
                 System.out.println("Stored Port in ClientMain: " + storedPort);
                 try {
-                    DataBuffer.clientSeocket = new Socket(storedIP, storedPort);
-                    DataBuffer.oos = new ObjectOutputStream(DataBuffer.clientSeocket.getOutputStream());
-                    DataBuffer.ois = new ObjectInputStream(DataBuffer.clientSeocket.getInputStream());
+                    DataBuffer.clientSocket = new Socket(storedIP, storedPort);
+                    DataBuffer.oos = new ObjectOutputStream(DataBuffer.clientSocket.getOutputStream());
+                    DataBuffer.ois = new ObjectInputStream(DataBuffer.clientSocket.getInputStream());
                     System.out.println("你连上服务器啦！！！ " );
 
                 } catch (Exception e) {
