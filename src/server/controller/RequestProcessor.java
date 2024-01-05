@@ -1,5 +1,6 @@
 package server.controller;
 
+import com.vdurmont.emoji.EmojiParser;
 import common.model.entity.*;
 import common.util.RecordUtil;
 import server.DataBuffer;
@@ -221,6 +222,7 @@ public class RequestProcessor implements Runnable {
         response.setStatus(ResponseStatus.OK);
         response.setType(ResponseType.CHAT);
         response.setData("txtMsg", msg);
+        msg.setMessage(EmojiParser.parseToAliases(msg.getMessage()));
 
         recordMap.get(msg.getFromUser().getId()).add(msg);
 

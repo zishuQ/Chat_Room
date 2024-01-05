@@ -6,6 +6,7 @@ import client.model.entity.MyCellRenderer;
 import client.model.entity.OnlineUserListModel;
 import client.util.ClientUtil;
 import client.util.JFrameShaker;
+import com.vdurmont.emoji.EmojiParser;
 import common.model.entity.FileInfo;
 import common.model.entity.Message;
 import common.model.entity.Request;
@@ -290,7 +291,7 @@ public class ChatFrame extends JFrame {
 //        }
         // 从本地读取聊天记录
         String record = RecordUtil.getLocalRecord(user.getId());
-        ClientUtil.appendTxt2MsgListArea(record);
+        ClientUtil.appendTxt2MsgListArea(EmojiParser.parseToUnicode(record));
 
     }
 

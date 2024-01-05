@@ -12,6 +12,7 @@ package client.util;
 
 import client.DataBuffer;
 import client.ui.ChatFrame;
+import com.vdurmont.emoji.EmojiParser;
 import common.model.entity.Message;
 import common.model.entity.Request;
 import common.model.entity.Response;
@@ -74,6 +75,7 @@ public class ClientUtil {
     }
 
     public static void appendTxt2MsgListArea(Message message, Long id) {
+        message.setMessage(EmojiParser.parseToAliases(message.getMessage()));
         RecordUtil.recordInLocal(message, id);
     }
 }
