@@ -74,9 +74,6 @@ public class ClientUtil {
     }
 
     public static void appendTxt2MsgListArea(Message message, Long id) {
-        System.out.println("----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----");
         RecordUtil.recordInLocal(message, id);
-        System.out.println("Success");
-        System.out.println("----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----");
     }
 }

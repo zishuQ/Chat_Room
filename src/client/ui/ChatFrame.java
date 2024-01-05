@@ -57,6 +57,7 @@ public class ChatFrame extends JFrame {
      * 私聊复选框
      */
     public JCheckBox rybqBtn;
+    private boolean isAnonymous = false;
 
     public ChatFrame() {
         this.init();
@@ -83,8 +84,8 @@ public class ChatFrame extends JFrame {
 
         // 创建一个分隔窗格
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, mainPanel, userPanel);
-        splitPane.setDividerLocation(380);
-        splitPane.setDividerSize(10);
+        splitPane.setDividerLocation(380 * 2);
+        splitPane.setDividerSize(10 * 2);
         splitPane.setOneTouchExpandable(true);
         this.add(splitPane, BorderLayout.CENTER);
 
@@ -98,8 +99,8 @@ public class ChatFrame extends JFrame {
         // 创建一个分隔窗格
         JSplitPane splitPane2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
                 infoPanel, sendPanel);
-        splitPane2.setDividerLocation(300);
-        splitPane2.setDividerSize(1);
+        splitPane2.setDividerLocation(300 * 2);
+        splitPane2.setDividerSize(1 * 2);
         mainPanel.add(splitPane2, BorderLayout.CENTER);
 
         otherInfoLbl = new JLabel("当前状态：群聊中...");
@@ -149,6 +150,32 @@ public class ChatFrame extends JFrame {
         btn2Panel.add(submitBtn);
         sendPanel.add(btn2Panel, BorderLayout.SOUTH);
 
+        //发送表情
+        JButton emojiBtn = new JButton(new ImageIcon("images/sendFace.png"));
+        emojiBtn.setMargin(new Insets(0, 0, 0, 0));
+        emojiBtn.setToolTipText("向对方发送表情");
+        btnPanel.add(emojiBtn);
+
+        emojiBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                EmojiSelector selector = new EmojiSelector(ChatFrame.this);
+                selector.setVisible(true);
+            }
+        });
+
+        // 在初始化方法init()中添加复选框
+        JCheckBox anonymousCheckBox = new JCheckBox("匿名发送");
+        btnPanel.add(anonymousCheckBox);
+
+        // 设置复选框的监听器
+        anonymousCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                isAnonymous = anonymousCheckBox.isSelected();
+            }
+        });
+
         //在线用户列表面板
         JPanel onlineListPane = new JPanel();
         onlineListPane.setLayout(new BorderLayout());
@@ -163,8 +190,8 @@ public class ChatFrame extends JFrame {
         // 右边用户列表创建一个分隔窗格
         JSplitPane splitPane3 = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
                 onlineListPane, currentUserPane);
-        splitPane3.setDividerLocation(340);
-        splitPane3.setDividerSize(1);
+        splitPane3.setDividerLocation(340 * 2);
+        splitPane3.setDividerSize(1 * 2);
         userPanel.add(splitPane3, BorderLayout.CENTER);
 
         //获取在线用户并缓存
@@ -314,9 +341,13 @@ public class ChatFrame extends JFrame {
 
             DateFormat df = new SimpleDateFormat("HH:mm:ss");
             StringBuffer sb = new StringBuffer();
-            sb.append(" ").append(df.format(msg.getSendTime())).append(" ")
-                    .append(msg.getFromUser().getNickname())
-                    .append("(").append(msg.getFromUser().getId()).append(") ");
+            sb.append(" ").append(df.format(msg.getSendTime())).append(" ");
+            if (!isAnonymous) {
+                sb.append(msg.getFromUser().getNickname())
+                        .append("(").append(msg.getFromUser().getId()).append(") ");
+            } else {
+                sb.append(" ** ");
+            }
             if (!this.rybqBtn.isSelected()) {//群聊
                 sb.append("对大家说");
             }

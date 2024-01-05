@@ -25,10 +25,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
+import java.net.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -50,7 +47,8 @@ public class ServerInfoFrame extends JFrame {
 
     public void init() {  //初始化窗体
         String ipAddress = getWLANIPv4Address();
-        this.setTitle("服务器 - IP地址: " + ipAddress);//设置服务器启动标题
+        String ip6Address = getWLANIPv6Address();
+        this.setTitle("服务器 - ipv4地址: " + ipAddress + "  ipv6地址: " + ip6Address);//设置服务器启动标题
         this.setBounds((DataBuffer.screenSize.width - 700)/2,
                 (DataBuffer.screenSize.height - 475)/2, 700, 475);
         this.setLayout(new BorderLayout());
@@ -254,6 +252,25 @@ public class ServerInfoFrame extends JFrame {
                         if (address instanceof Inet4Address) {
                             return address.getHostAddress(); // 返回 IPv4 地址
                         }
+                    }
+                }
+            }
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        return "未知";
+    }
+
+    public String getWLANIPv6Address() {
+        try {
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                NetworkInterface networkInterface = interfaces.nextElement();
+                Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
+                while (addresses.hasMoreElements()) {
+                    InetAddress address = addresses.nextElement();
+                    if (address instanceof Inet6Address && !address.isLoopbackAddress() && !address.isLinkLocalAddress() && !address.isSiteLocalAddress()) {
+                        return address.getHostAddress();
                     }
                 }
             }
