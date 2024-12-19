@@ -1,6 +1,8 @@
 # 基于Socket的Java网络聊天室
 
-原项目链接：https://github.com/leo6033/Chat_Room，有关原项目介绍可访问作者的[博客园](https://www.cnblogs.com/csu-lmw/p/10981374.html)，如有帮助请为原项目作者加一个star
+原项目链接：https://github.com/leo6033/Chat_Room
+
+有关原项目介绍可访问作者的[博客园](https://www.cnblogs.com/csu-lmw/p/10981374.html)，如有帮助请为原项目作者加一个star
 
 # 功能介绍
 基于CS架构实现
